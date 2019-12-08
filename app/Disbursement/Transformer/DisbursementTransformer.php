@@ -18,22 +18,31 @@ class DisbursementTransformer
      * @param DisbursementModel $disbursement
      * @return string
      */
-    public function transform(DisbursementModel $disbursement) : string
+    public function transform(? DisbursementModel $disbursement) : string
     {
-        return json_encode([
-            'transaction_id'    => $disbursement->getTransactionCode(),
-            'amount'            => $disbursement->getAmount(),
-            'status'            => $disbursement->getStatus(),
-            'time_served'       => $disbursement->getTimeServed(),
-            'bank_code'         => $disbursement->getBankCode(),
-            'account_number'    => $disbursement->getAccountNumber(),
-            'beneficiary_name'  => $disbursement->getBeneficiaryName(),
-            'remark'            => $disbursement->getRemark(),
-            'receipt'           => $disbursement->getReceipt(),
-            'fee'               => $disbursement->getFee(),
-            'created_at'        => $disbursement->getCreatedAt(),
-            'updated_at'        => $disbursement->getUpdatedAt()
-        ], JSON_PRETTY_PRINT);
+        try {
+            return json_encode([
+                'data'      => [
+                    'transaction_id'    => $disbursement->getTransactionCode(),
+                    'amount'            => $disbursement->getAmount(),
+                    'status'            => $disbursement->getStatus(),
+                    'time_served'       => $disbursement->getTimeServed(),
+                    'bank_code'         => $disbursement->getBankCode(),
+                    'account_number'    => $disbursement->getAccountNumber(),
+                    'beneficiary_name'  => $disbursement->getBeneficiaryName(),
+                    'remark'            => $disbursement->getRemark(),
+                    'receipt'           => $disbursement->getReceipt(),
+                    'fee'               => $disbursement->getFee(),
+                    'created_at'        => $disbursement->getCreatedAt(),
+                    'updated_at'        => $disbursement->getUpdatedAt()
+                ]
+            ], JSON_PRETTY_PRINT);
+        } catch (\Exception $exception) {
+            return json_encode([
+                'status'    => 'ERROR',
+                'message'   => $exception->getMessage()
+            ], JSON_PRETTY_PRINT);
+        }
     }
 
 }
