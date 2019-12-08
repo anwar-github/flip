@@ -42,17 +42,32 @@ class DisbursementController
      */
     public function storeDisbursement(array $input) : string
     {
-        return (new DisbursementTransformer())->transform($this->creatorAction->process($input));
+        try {
+            return (new DisbursementTransformer())->transform($this->creatorAction->process($input));
+        } catch (\Exception $exception) {
+            return json_encode([
+                'status'    => 'ERROR',
+                'message'   => $exception->getMessage()
+            ], JSON_PRETTY_PRINT);
+        }
     }
 
     /**
      * @param int $transactionCode
      * @return string
+     * @throws \Exception
      */
     public function checkStatus(int $transactionCode) : string
     {
-        return (new DisbursementTransformer())->transform($this->checkStatus->process([
-            'transaction_code'  => $transactionCode
-        ]));
+        try {
+            return (new DisbursementTransformer())->transform($this->checkStatus->process([
+                'transaction_code'  => $transactionCode
+            ]));
+        } catch (\Exception $exception) {
+            return json_encode([
+                'status'    => 'ERROR',
+                'message'   => $exception->getMessage()
+            ], JSON_PRETTY_PRINT);
+        }
     }
 }

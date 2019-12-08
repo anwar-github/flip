@@ -34,7 +34,7 @@ class DisbursementCheckStatusAction extends AbstractDisbursementAction
          * @var $transaction DisbursementInterface
          */
         $transaction = $this->repository->findBy('transaction_code', (int) $input['transaction_code']);
-        if (is_null($transaction)) throw new \Exception('data not found');
+        if (is_null($transaction)) throw new \Exception('data not found ' . $input['transaction_code']);
 
         return true;
     }

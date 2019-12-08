@@ -31,7 +31,8 @@ abstract class AbstractDisbursementAction extends DisbursementClient
 
     /**
      * @param array $input
-     * @return array|mixed
+     * @return ModelInterface|array|mixed
+     * @throws \Exception
      */
     public function process(array $input)
     {
@@ -49,6 +50,7 @@ abstract class AbstractDisbursementAction extends DisbursementClient
 
         } catch (\Exception $exception) {
             //TODO: handle exception
+            throw $exception;
         }
     }
 
