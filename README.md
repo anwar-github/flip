@@ -11,16 +11,62 @@ Use the docker to running application, [here](https://docs.docker.com/install/) 
 
 
 ```bash
+// clone project
+git clone https://github.com/anwar-github/flip.git
+
+// change directory
+cd flip
+
+// copy env-example to .env
+cp env-example .env
+
 // running application
-docker-compose up -d nginx mysql php_fpm
+docker-compose up -d nginx mysql php-fpm
+ 
+//check container is running
+docker-compose ps
 
 // container workspace
 docker-compose exec php-fpm sh
+cd ../flip/database/Migration/
 
-// migration (at container workspace)
-/var/www/flip/database/Migration php Migration.php
+// migration (/var/www/flip/database/Migration # php Migration.php)
+php Migration.php
 
 ```
+
+open browser [http://localhost:3000](http://localhost:3000)
+
+## Specification
+1. database mysql:5.7
+2. server nginx:1.11.10-alpine
+3. php:7.1-fpm-alpine
+4. Docker version 19.03.5, build 633a0ea (develop)
+5. docker-compose version 1.25.0-rc4, build 8f3c9c58 (develop)
+
+you can running manually with nginx config:
+
+```
+server {
+  listen  80;
+  error_log  /var/log/nginx/error.log;
+  access_log /var/log/nginx/access.log;
+  root /var/www/flip/;
+
+  location / {
+      try_files $uri /index.php$is_args$args;
+  }
+
+  location ~ ^/.+\.php(/|$) {
+      # change here for other pass
+      fastcgi_pass php-fpm:9000;
+      include fastcgi_params;
+      fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+  }
+}
+```
+
+
 
 
 ## Contributing
