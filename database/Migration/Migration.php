@@ -55,21 +55,21 @@ class Migration
     {
         $query = "
             CREATE TABLE `transaction` (
-              `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-              `transaction_code` varchar(45) DEFAULT '0',
-              `amount` int(11) DEFAULT '0',
-              `status` char(15) DEFAULT '''''',
-              `time_served` timestamp NULL DEFAULT NULL,
-              `bank_code` varchar(45) DEFAULT '''''',
-              `account_number` varchar(25) DEFAULT '''''',
-              `beneficiary_name` varchar(45) DEFAULT '''''',
-              `remark` varchar(100) NOT NULL DEFAULT '''''',
-              `receipt` text,
-              `fee` int(11) DEFAULT '0',
-              `created_at` timestamp NULL DEFAULT NULL,
-              `updated_at` timestamp NULL DEFAULT NULL,
-              PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+                  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                  `transaction_code` varchar(45) DEFAULT '0',
+                  `amount` int(11) DEFAULT '0',
+                  `status` char(15) DEFAULT '''''',
+                  `time_served` varchar(45) DEFAULT NULL,
+                  `bank_code` varchar(45) DEFAULT '''''',
+                  `account_number` varchar(25) DEFAULT '''''',
+                  `beneficiary_name` varchar(45) DEFAULT '''''',
+                  `remark` varchar(100) NOT NULL DEFAULT '''''',
+                  `receipt` text,
+                  `fee` int(11) DEFAULT '0',
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  `updated_at` timestamp NULL DEFAULT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
         ";
         $this->mysql->exec($query, [
             'database'  => getenv('MYSQL_DATABASE')
