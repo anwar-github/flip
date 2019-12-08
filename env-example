@@ -1,0 +1,17 @@
+APP_ENV=local
+
+
+# ##########################################################
+# MYSQL
+# ##########################################################
+MYSQL_HOST=mysql
+MYSQL_PORT=3306
+MYSQL_USER=root
+MYSQL_PASSWORD=flip
+MYSQL_DATABASE=disbursment_db
+
+# ##########################################################
+# Slightly-big Flip API
+# ##########################################################
+SBIG_HOST=https://nextar.flip.id
+SBIG_SECRET_KEY=HyzioY7LP6ZoO7nTYKbG8O4ISkyWnX1JvAEVAhtWKZumooCzqp41
