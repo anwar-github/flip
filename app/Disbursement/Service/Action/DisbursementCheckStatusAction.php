@@ -7,6 +7,9 @@
 
 namespace app\Disbursement\Service\Action;
 
+use app\Disbursement\Entity\Model\DisbursementInterface;
+use app\Disbursement\Entity\Model\ModelInterface;
+
 /**
  * Class DisbursementCheckStatusAction
  *
@@ -19,13 +22,20 @@ class DisbursementCheckStatusAction extends AbstractDisbursementAction
     const AUTH_TYPE     = 'basic';
     const METHOD        = 'POST';
     const HTTP_VERSION  = 'HTTP/1.1';
+
     /**
      * @param array $input
      * @return bool
+     * @throws \Exception
      */
     public function validate(array $input): bool
     {
-        // TODO: Implement validate() method.
+        /**
+         * @var $transaction DisbursementInterface
+         */
+        $transaction = $this->repository->findBy('transaction_code', (int) $input['transaction_code']);
+        if (is_null($transaction)) throw new \Exception('data not found');
+
         return true;
     }
 
@@ -35,16 +45,17 @@ class DisbursementCheckStatusAction extends AbstractDisbursementAction
      */
     public function generateRequest(array $input): string
     {
-        return http_build_query($input);
+        return (int) $input['transaction_code'];
     }
 
     /**
      * @param string $payload
      * @return DisbursementResponseInterface
+     * @throws \Exception
      */
     public function handle(string $payload): DisbursementResponseInterface
     {
-        return $this->http(self::PATH, $payload, [
+        return $this->http(self::PATH . '/' . $payload, $payload, [
             'header'    => [
                 'Content-Type'  => 'application/x-www-form-urlencoded',
             ],
@@ -55,12 +66,18 @@ class DisbursementCheckStatusAction extends AbstractDisbursementAction
 
     /**
      * @param DisbursementResponseInterface $disbursementResponse
-     * @return array
+     * @return ModelInterface|array
      */
-    public function handleSuccess(DisbursementResponseInterface $disbursementResponse): array
+    public function handleSuccess(DisbursementResponseInterface $disbursementResponse)
     {
-        //TODO: update database
-        return $disbursementResponse->getData();
+        $data = $disbursementResponse->getData();
+        return $this->repository->update([
+            'status'        => $data['status'],
+            'receipt'       => $data['receipt'],
+            'time_served'   => $data['time_served']
+        ], [
+            'transaction_code' => $data['id']
+        ]);
     }
 
     /**

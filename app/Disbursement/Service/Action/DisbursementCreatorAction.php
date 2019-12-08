@@ -43,6 +43,7 @@ class DisbursementCreatorAction extends AbstractDisbursementAction
     /**
      * @param string $payload
      * @return DisbursementResponseInterface
+     * @throws \Exception
      */
     public function handle(string $payload): DisbursementResponseInterface
     {
@@ -61,7 +62,7 @@ class DisbursementCreatorAction extends AbstractDisbursementAction
      */
     public function handleSuccess(DisbursementResponseInterface $disbursementResponse)
     {
-        return (new DisbursementServiceRepository())->create(array_merge($disbursementResponse->getData(), [ 'transaction_code' => $disbursementResponse->getData()['id']]));
+        return $this->repository->create(array_merge($disbursementResponse->getData(), [ 'transaction_code' => $disbursementResponse->getData()['id']]));
     }
 
     /**

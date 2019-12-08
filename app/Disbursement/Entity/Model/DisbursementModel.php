@@ -30,6 +30,7 @@ class DisbursementModel implements DisbursementInterface
         'transaction_code',
         'amount',
         'status',
+        'time_served',
         'bank_code',
         'account_number',
         'beneficiary_name',
@@ -62,6 +63,14 @@ class DisbursementModel implements DisbursementInterface
     public function getStatus(): ?string
     {
         return $this->data->status;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTimeServed(): ?string
+    {
+        return $this->data->time_served;
     }
 
     /**

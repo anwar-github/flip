@@ -7,6 +7,7 @@
 
 namespace app\Disbursement;
 
+use app\Disbursement\Service\Action\DisbursementCheckStatusAction;
 use app\Disbursement\Service\Action\DisbursementCreatorAction;
 use app\Disbursement\Transformer\DisbursementTransformer;
 
@@ -21,11 +22,17 @@ class DisbursementController
     protected $creatorAction;
 
     /**
+     * @var $checkStatus DisbursementCheckStatusAction
+     */
+    protected $checkStatus;
+
+    /**
      * DisbursementController constructor.
      */
     public function __construct()
     {
         $this->creatorAction    = new DisbursementCreatorAction();
+        $this->checkStatus      = new DisbursementCheckStatusAction();
     }
 
     /**
@@ -39,11 +46,13 @@ class DisbursementController
     }
 
     /**
-     * @param int $transactionID
-     * @return array
+     * @param int $transactionCode
+     * @return string
      */
-    public function checkStatus(int $transactionID) : array
+    public function checkStatus(int $transactionCode) : string
     {
-        //TODO: check status action
+        return (new DisbursementTransformer())->transform($this->checkStatus->process([
+            'transaction_code'  => $transactionCode
+        ]));
     }
 }

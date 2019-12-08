@@ -7,6 +7,8 @@
 
 namespace lib\Mysql;
 
+use http\Params;
+
 /**
  * Class FlipMysqlConnection
  */
@@ -48,5 +50,25 @@ class FlipMysqlConnection
         $conn->close();
 
         return $res;
+    }
+
+    /**
+     * @param string $query
+     * @param $params
+     * @param array $connection
+     * @return array|null
+     */
+    public function execBinding(string $query, $params, array $connection = [])
+    {
+        $conn = $this->connection($connection);
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('i', $params['value']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+        $stmt->close();
+        $conn->close();
+
+        return $data;
     }
 }

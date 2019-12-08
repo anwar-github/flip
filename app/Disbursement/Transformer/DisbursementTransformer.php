@@ -24,6 +24,7 @@ class DisbursementTransformer
             'transaction_id'    => $disbursement->getTransactionCode(),
             'amount'            => $disbursement->getAmount(),
             'status'            => $disbursement->getStatus(),
+            'time_served'       => $disbursement->getTimeServed(),
             'bank_code'         => $disbursement->getBankCode(),
             'account_number'    => $disbursement->getAccountNumber(),
             'beneficiary_name'  => $disbursement->getBeneficiaryName(),
@@ -32,7 +33,7 @@ class DisbursementTransformer
             'fee'               => $disbursement->getFee(),
             'created_at'        => $disbursement->getCreatedAt(),
             'updated_at'        => $disbursement->getUpdatedAt()
-        ]);
+        ], JSON_PRETTY_PRINT);
     }
 
 }

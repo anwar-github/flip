@@ -54,7 +54,7 @@ class FlipRequest
     {
         if($this->requestMethod === "GET")
         {
-            return;
+            return (int) end(explode('/', $this->requestUri));
         }
         if ($this->requestMethod == "POST")
         {

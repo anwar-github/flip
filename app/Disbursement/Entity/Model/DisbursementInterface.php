@@ -32,6 +32,11 @@ interface DisbursementInterface extends ModelInterface, HaveLogTimeInterface
     /**
      * @return string|null
      */
+    public function getTimeServed() : ?string ;
+
+    /**
+     * @return string|null
+     */
     public function getBankCode() : ?string ;
 
     /**

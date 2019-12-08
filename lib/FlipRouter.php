@@ -76,21 +76,23 @@ class FlipRouter
     {
         $methodDictionary = $this->{strtolower($this->request->requestMethod)};
         $formatedRoute = $this->formatRoute($this->request->requestUri);
-//        var_dump($methodDictionary, $this->request, $formatedRoute);die();
         $method = $methodDictionary[$formatedRoute];
-        if(is_null($method))
-        {
-            $this->defaultRequestHandler();
-            return;
+        if(is_null($method)) {
+            $formatedRoute = $this->params();
+            $method = $methodDictionary[$formatedRoute];
+            if(is_null($method)) return $this->defaultRequestHandler();
         }
+        header('Content-Type: application/json');
         echo call_user_func_array($method, array($this->request));
     }
 
-    private function params($methodDictionary, $formatedRoute)
+    private function params()
     {
         if ($this->request->requestMethod === 'GET') {
             $explode = explode('/', $this->request->requestUri);
+            array_pop($explode);
 
+            return implode('/', $explode) . '/{id}';
         }
     }
 

@@ -35,9 +35,21 @@ abstract class FlipRepository extends FlipMysqlConnection implements FlipReposit
     /**
      * @inheritdoc
      */
-    public function findBy(string $attribute, string $value): array
+    public function findBy(string $attribute, string $value) : ?ModelInterface
     {
-        // TODO: Implement findBy() method.
+        $this->setModel();
+        $table = $this->model->table;
+        $query = "select * from $table where $attribute = ?";
+        $data =  $this->execBinding($query, [
+            'value'     => $value
+        ],[
+            'database'  => $this->model->database ?? getenv('MYSQL_DATABASE')
+        ]);
+
+        $this->model->data = (object) $data;
+
+        return is_null($data) ? null : $this->model;
+
     }
 
     /**
@@ -58,6 +70,8 @@ abstract class FlipRepository extends FlipMysqlConnection implements FlipReposit
         $input = $this->filter($input);
         $table = $this->model->table;
         $query = "INSERT INTO $table (".implode(',',array_keys($input)).") VALUES ('".implode("','",array_values($input))."')";
+
+        // TODO: make binding for for prevent sql injection
         $this->exec($query, [
             'database'  => $this->model->database ?? getenv('MYSQL_DATABASE')
         ]);
@@ -88,9 +102,24 @@ abstract class FlipRepository extends FlipMysqlConnection implements FlipReposit
     /**
      * @inheritdoc
      */
-    public function update(array $attributes): array
+    public function update(array $input, array $condition): ?ModelInterface
     {
-        // TODO: Implement update() method.
+        $this->setModel();
+        $input = $this->filter($input);
+        $table = $this->model->table;
+        $con = $condition['transaction_code'];
+        $query = "UPDATE $table SET ";
+
+        foreach($input as $key => $value) $query .= $key."='". $value."', ";
+        $query = rtrim($query, ", ");
+        $query .= " where transaction_code = $con";
+
+        // TODO: make binding for for prevent sql injection
+        $this->exec($query, [
+            'database'  => $this->model->database ?? getenv('MYSQL_DATABASE')
+        ]);
+
+        return $this->findBy('transaction_code', $con);
     }
 
     /**

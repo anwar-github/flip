@@ -7,6 +7,8 @@
 
 namespace lib\Mysql;
 
+use app\Disbursement\Entity\Model\ModelInterface;
+
 /**
  * Interface AbstractFlipRepositoryInterface
  *
@@ -22,9 +24,9 @@ interface FlipRepositoryInterface
     /**
      * @param string $attribute
      * @param string $value
-     * @return array
+     * @return ModelInterface|null
      */
-    public function findBy(string $attribute, string $value) : array;
+    public function findBy(string $attribute, string $value) : ?ModelInterface;
 
     /**
      * @param array $attributes
@@ -39,10 +41,11 @@ interface FlipRepositoryInterface
     public function create(array $attributes);
 
     /**
-     * @param array $attributes
-     * @return array
+     * @param array $input
+     * @param array $condition
+     * @return ModelInterface|null
      */
-    public function update(array $attributes) : array;
+    public function update(array $input, array $condition) : ?ModelInterface;
 
     /**
      * @param int $id

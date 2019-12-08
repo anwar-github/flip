@@ -7,7 +7,8 @@
 
 namespace app\Disbursement\Service\Action;
 
-
+use app\Disbursement\Entity\Model\ModelInterface;
+use app\Disbursement\Entity\Repository\DisbursementServiceRepository;
 use app\Disbursement\Service\DisbursementClient;
 
 /**
@@ -15,6 +16,19 @@ use app\Disbursement\Service\DisbursementClient;
  */
 abstract class AbstractDisbursementAction extends DisbursementClient
 {
+    /**
+     * @var DisbursementServiceRepository $repository
+     */
+    protected $repository;
+
+    /**
+     * AbstractDisbursementAction constructor.
+     */
+    public function __construct()
+    {
+        $this->repository = new DisbursementServiceRepository();
+    }
+
     /**
      * @param array $input
      * @return array|mixed
@@ -24,9 +38,9 @@ abstract class AbstractDisbursementAction extends DisbursementClient
         try {
             $this->validate($input);
             $payload    = $this->generateRequest($input);
-//            $this->logRequest($payload);
+            // $this->logRequest($payload);
             $response   = $this->handle($payload);
-//            $this->logResponse($payload, $response);
+            // $this->logResponse($payload, $response);
 
             if ($response->isSuccess()) return $this->handleSuccess($response);
             if ($response->isDecline()) return $this->handleDecline($response);
@@ -58,7 +72,7 @@ abstract class AbstractDisbursementAction extends DisbursementClient
 
     /**
      * @param DisbursementResponseInterface $disbursementResponse
-     * @return mixed
+     * @return ModelInterface
      */
     abstract function handleSuccess(DisbursementResponseInterface $disbursementResponse);
 
