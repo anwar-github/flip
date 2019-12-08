@@ -37,6 +37,8 @@ php Migration.php
 
 open browser [http://localhost:3000](http://localhost:3000)
 
+import POSTMAN collection [here](https://github.com/anwar-github/flip/blob/master/flip.postman_collection.json)
+
 ## Specification
 1. database mysql:5.7
 2. server nginx:1.11.10-alpine
@@ -65,8 +67,6 @@ server {
   }
 }
 ```
-
-
 
 
 ## Contributing
