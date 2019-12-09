@@ -8,8 +8,11 @@
 $router = new \lib\FlipRouter(new \lib\FlipRequest());
 
 $router->get('/', function() {
-    $conn = new \lib\Mysql\FlipMysqlConnection();
-    $conn->connection();
+    return json_encode([
+        'api'       => 'flip',
+        'version'   => 1.0,
+        'status'    => 'green'
+    ]);
 });
 
 $router->post('/disburse', function(\lib\FlipRequest $request) {
