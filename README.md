@@ -7,7 +7,7 @@ Integration Slightly-big Flip
 3. Check the disbursement status, and update the information on your database according to the response you get
 
 ## Installation
-Use the docker to running application, [here](https://docs.docker.com/install/) for documentation.
+Use the docker & docker-compose to running application, [here](https://docs.docker.com/install/) for documentation.
 
 
 ```bash
